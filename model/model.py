@@ -49,7 +49,7 @@ def init_weights(model):
 
 #-----学習-----#
 n_epochs = 10
-lr = 0.0003
+lr = 0.00025
 loss_func = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model_1.parameters(), lr=lr)
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -161,4 +161,6 @@ for i in range(81):
     img = np.transpose(img, (1, 2, 0))
     plt.imshow(img)
     plt.title(label, fontsize=8)
+    plt.xticks([])
+    plt.yticks([])
 plt.show()
