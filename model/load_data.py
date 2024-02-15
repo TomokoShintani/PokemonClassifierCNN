@@ -88,21 +88,23 @@ fig = plt.figure(num='Rotate Shift', figsize=(12, 20))
 
 dataloader_rotate_shift = torch.utils.data.DataLoader(dataset_rotate_shift, batch_size=1, shuffle=True)
 
-i = 0
-for label, x in dataloader_rotate_shift:
-    label = str(label.item())
-    x = torch.squeeze(x).numpy()
-    x = np.transpose(x, (1, 2, 0))
-    ax = fig.add_subplot(9, 9, i+1, xticks=[], yticks=[])
-    ax.imshow(x) #imshowの時の次元は(H, W, RGB)
-    #ax.set_title(label, fontsize=8)
+
+def show_rotate_shift():
+    i = 0
+    for label, x in dataloader_rotate_shift:
+        label = str(label.item())
+        x = torch.squeeze(x).numpy()
+        x = np.transpose(x, (1, 2, 0))
+        ax = fig.add_subplot(9, 9, i+1, xticks=[], yticks=[])
+        ax.imshow(x) #imshowの時の次元は(H, W, RGB)
+        #ax.set_title(label, fontsize=8)
     
-    i += 1
-    if i >= 81:
-        break
-plt.show(block=False)
-plt.pause(7.0)     #-->time.sleep()だと、plt.show()自体に結構な時間がかかるので、うまく表示されない。
-plt.close()
+        i += 1
+        if i >= 81:
+            break
+    plt.show(block=False)
+    plt.pause(7.0)     #-->time.sleep()だと、plt.show()自体に結構な時間がかかるので、うまく表示されない。
+    plt.close()
 
 # Random Zoom Erasing
 transform_zoom_erase = transforms.Compose([transforms.CenterCrop(size=100),transforms.Resize(120), transforms.RandomErasing(p = 0.8, scale = (0.1, 0.15), ratio = (0.3, 3.3))])
@@ -114,19 +116,21 @@ fig = plt.figure(num='Zoom Erase', figsize=(12, 20))
 
 dataloader_zoom_erase = torch.utils.data.DataLoader(dataset_zoom_erase, batch_size=1, shuffle=True)
 
-i = 0
-for _, x in dataloader_zoom_erase:
-    x = torch.squeeze(x).numpy()
-    x = np.transpose(x, (1, 2, 0))
-    ax = fig.add_subplot(9, 9, i+1, xticks=[], yticks=[])
-    ax.imshow(x) #imshowの時の次元は(H, W, RGB)
+
+def show_zoom_erase():
+    i = 0
+    for _, x in dataloader_zoom_erase:
+        x = torch.squeeze(x).numpy()
+        x = np.transpose(x, (1, 2, 0))
+        ax = fig.add_subplot(9, 9, i+1, xticks=[], yticks=[])
+        ax.imshow(x) #imshowの時の次元は(H, W, RGB)
     
-    i += 1
-    if i >= 81:
-        break
-plt.show(block=False)
-plt.pause(7.0)
-plt.close()
+        i += 1
+        if i >= 81:
+            break
+    plt.show(block=False)
+    plt.pause(7.0)
+    plt.close()
 
 
 #-----訓練検証用のデータセットの作成-----#
@@ -134,3 +138,7 @@ plt.close()
 dataset_trainval = torch.utils.data.ConcatDataset([dataset_zoom_erase, dataset_zoom, dataset_rotate, dataset_rotate_shift, dataset_flip, dataset_shift_1, dataset_shift_2, dataset])
 #train validationに分割
 train_dataset, valid_dataset = torch.utils.data.random_split(dataset_trainval, [len(dataset_trainval)-140, 140])
+
+if __name__ == '__main__':
+    show_rotate_shift()
+    show_zoom_erase()
