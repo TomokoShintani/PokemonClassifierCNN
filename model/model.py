@@ -1,9 +1,6 @@
 from load_data import train_dataset, valid_dataset
 import numpy as np
-import pandas as pd
-import cv2
 import torch
-from torchvision import datasets, transforms, models
 import matplotlib.pyplot as plt
 import torch.nn as nn
 
